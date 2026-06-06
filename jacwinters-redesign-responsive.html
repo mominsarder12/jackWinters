@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jac Winters — The Rogue Poet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TOKENS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  --ink:      #0c0b08;
+  --asphalt:  #161410;
+  --coal:     #1e1b16;
+  --paper:    #f2ece0;
+  --cream:    #e8e0cc;
+  --rust:     #b04218;
+  --rust-lt:  #c94f22;
+  --amber:    #c08a2a;
+  --gold:     #d4a843;
+  --mist:     #8896a4;
+  --pewter:   #5a6470;
+  --midnight: #182030;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESET & BASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  background:var(--asphalt);
+  color:var(--paper);
+  font-family:'Cormorant Garamond', Georgia, serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img { display:block; max-width:100%; }
+a { color:inherit; text-decoration:none; }
+
+/* Grain overlay */
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:9999; opacity:.45;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SHARED UTILITIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.sec-label {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.72rem; font-weight:800;
+  letter-spacing:.42em; text-transform:uppercase;
+  display:flex; align-items:center; gap:.9rem;
+  margin-bottom:1.4rem;
+}
+.sec-label::after {
+  content:''; display:block;
+  width:40px; height:2px;
+}
+.sec-label--rust  { color:var(--rust-lt); }
+.sec-label--rust::after  { background:var(--rust); }
+.sec-label--amber { color:var(--amber); }
+.sec-label--amber::after { background:var(--amber); }
+.sec-label--dark  { color:var(--rust); }
+.sec-label--dark::after  { background:var(--rust); }
+
+.sec-h2 {
+  font-family:'Cormorant Garamond', serif;
+  font-weight:700; line-height:1.05;
+  letter-spacing:-.01em;
+  font-size:clamp(2.2rem, 5vw, 3.8rem);
+}
+.sec-h2 em { font-style:italic; }
+.sec-h2--light { color:var(--paper); }
+.sec-h2--light em { color:var(--gold); }
+.sec-h2--dark  { color:var(--ink); }
+.sec-h2--dark em  { color:var(--rust); }
+
+.body-text {
+  font-size:clamp(1rem, 2.2vw, 1.1rem);
+  line-height:1.9;
+  color:rgba(242,236,224,.66);
+}
+.body-text strong { color:var(--paper); font-weight:600; }
+
+/* Buttons */
+.btn {
+  display:inline-block;
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.82rem; font-weight:800;
+  letter-spacing:.22em; text-transform:uppercase;
+  padding:.95rem 2.4rem; border:none; cursor:pointer;
+  transition:transform .15s ease, background .2s, color .2s, border-color .2s;
+  white-space:nowrap;
+}
+.btn:hover { transform:translateY(-3px); }
+.btn--fill    { background:var(--rust); color:#fff; }
+.btn--fill:hover { background:var(--rust-lt); }
+.btn--outline { background:transparent; color:var(--paper); border:1px solid rgba(242,236,224,.28); }
+.btn--outline:hover { border-color:var(--gold); color:var(--gold); }
+.btn--outline-dark { background:transparent; color:var(--rust); border:1px solid rgba(176,66,24,.4); }
+.btn--outline-dark:hover { border-color:var(--rust); background:rgba(176,66,24,.06); }
+
+/* Scroll reveal */
+.rv { opacity:0; transform:translateY(26px); transition:opacity .65s ease, transform .65s ease; }
+.rv.in { opacity:1; transform:translateY(0); }
+.rv.d1 { transition-delay:.12s; }
+.rv.d2 { transition-delay:.24s; }
+.rv.d3 { transition-delay:.38s; }
+.rv.d4 { transition-delay:.52s; }
+
+/* Road divider */
+.road-divider {
+  height:60px; background:var(--ink);
+  position:relative; overflow:hidden;
+}
+.road-divider::after {
+  content:''; position:absolute; left:0; right:0; top:50%;
+  height:2px;
+  background:repeating-linear-gradient(
+    to right,
+    var(--amber) 0, var(--amber) 50px,
+    transparent 50px, transparent 100px
+  );
+  opacity:.38;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NAV
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:1.2rem 5vw;
+  transition:background .35s, backdrop-filter .35s, border-color .35s;
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled {
+  background:rgba(12,11,8,.96);
+  backdrop-filter:blur(14px);
+  border-color:rgba(212,168,67,.1);
+}
+
+.nav__logo {
+  font-family:'Bebas Neue', sans-serif;
+  font-size:1.65rem; letter-spacing:.18em;
+  color:var(--gold);
+}
+
+/* Desktop links */
+.nav__links {
+  display:flex; gap:2.5rem; list-style:none;
+}
+.nav__links a {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.76rem; font-weight:700;
+  letter-spacing:.2em; text-transform:uppercase;
+  color:rgba(242,236,224,.7);
+  transition:color .2s;
+}
+.nav__links a:hover { color:var(--gold); }
+
+/* Hamburger (hidden on desktop) */
+.nav__burger {
+  display:none;
+  flex-direction:column; justify-content:center;
+  gap:5px; width:32px; height:32px;
+  background:none; border:none; cursor:pointer; padding:4px;
+}
+.nav__burger span {
+  display:block; height:2px; border-radius:2px;
+  background:var(--paper);
+  transition:transform .3s, opacity .3s, width .3s;
+}
+.nav__burger span:nth-child(2) { width:70%; }
+
+/* Mobile drawer */
+.nav__drawer {
+  display:none;
+  position:fixed; inset:0; z-index:190;
+  background:rgba(12,11,8,.98);
+  flex-direction:column; align-items:center; justify-content:center;
+  gap:2.5rem;
+  opacity:0; pointer-events:none;
+  transition:opacity .3s;
+}
+.nav__drawer.open {
+  display:flex; opacity:1; pointer-events:all;
+}
+.nav__drawer a {
+  font-family:'Cormorant Garamond', serif;
+  font-size:2.2rem; font-weight:700; font-style:italic;
+  color:var(--paper);
+  transition:color .2s;
+}
+.nav__drawer a:hover { color:var(--gold); }
+.nav__drawer-close {
+  position:absolute; top:1.5rem; right:5vw;
+  font-size:2rem; color:var(--mist);
+  background:none; border:none; cursor:pointer;
+  line-height:1;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.hero {
+  min-height:100vh;
+  display:grid; grid-template-columns:55% 45%;
+  position:relative; overflow:hidden;
+}
+
+/* Left */
+.hero__left {
+  position:relative; z-index:2;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:clamp(6rem,12vw,9rem) 5vw clamp(3.5rem,6vw,5.5rem) clamp(1.5rem,6vw,6vw);
+  background:linear-gradient(135deg, var(--ink) 0%, #1a1208 100%);
+}
+/* dashed road line */
+.hero__left::after {
+  content:''; position:absolute; top:0; right:0; bottom:0; width:3px;
+  background:repeating-linear-gradient(
+    to bottom, var(--gold) 0, var(--gold) 22px,
+    transparent 22px, transparent 50px
+  );
+  opacity:.28;
+}
+
+.hero__kicker {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:clamp(.68rem,.9vw,.8rem); font-weight:800;
+  letter-spacing:.38em; text-transform:uppercase;
+  color:var(--rust-lt);
+  display:flex; align-items:center; gap:1rem;
+  margin-bottom:1.8rem;
+  opacity:0; animation:fadeUp .8s ease forwards .3s;
+}
+.hero__kicker::before {
+  content:''; display:block; width:32px; height:2px; background:var(--rust);
+  flex-shrink:0;
+}
+
+.hero__name {
+  font-family:'Cormorant Garamond', serif;
+  font-weight:700;
+  font-size:clamp(3.8rem, 8.5vw, 9rem);
+  line-height:.85; letter-spacing:-.02em;
+  color:var(--paper);
+  opacity:0; animation:fadeUp 1s ease forwards .5s;
+}
+.hero__name-em {
+  display:block; font-style:italic;
+  color:var(--gold); font-weight:300;
+  font-size:clamp(2.5rem, 6vw, 6.5rem);
+  letter-spacing:.06em;
+}
+
+.hero__sub {
+  margin-top:2rem;
+  font-size:clamp(1rem, 1.4vw, 1.18rem); line-height:1.8;
+  color:rgba(242,236,224,.65); font-style:italic;
+  max-width:440px;
+  opacity:0; animation:fadeUp 1s ease forwards .75s;
+}
+
+.hero__ctas {
+  display:flex; gap:1rem; flex-wrap:wrap;
+  margin-top:2.5rem;
+  opacity:0; animation:fadeUp 1s ease forwards 1s;
+}
+
+.hero__meta {
+  display:flex; gap:2.5rem; flex-wrap:wrap;
+  margin-top:3rem;
+  opacity:0; animation:fadeUp 1s ease forwards 1.2s;
+}
+.hmeta { display:flex; flex-direction:column; gap:.2rem; }
+.hmeta__val {
+  font-family:'Bebas Neue', sans-serif;
+  font-size:clamp(2rem,3.5vw,2.8rem); line-height:1;
+  color:var(--gold);
+}
+.hmeta__key {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.65rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--mist);
+}
+
+.scroll-cue {
+  position:absolute; bottom:2rem; left:clamp(1.5rem,6vw,6vw);
+  display:flex; align-items:center; gap:1rem;
+  opacity:0; animation:fadeIn 1s ease forwards 2s;
+}
+.scroll-cue__dash { width:40px; height:1px; background:var(--rust); }
+.scroll-cue span {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.66rem; letter-spacing:.32em; text-transform:uppercase;
+  color:var(--mist);
+}
+
+/* Right */
+.hero__right {
+  position:relative; overflow:hidden;
+  background:radial-gradient(ellipse at 40% 55%, #1e3050 0%, #0c0b08 70%);
+}
+.hero__right::before {
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(192,138,42,.14) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(176,66,24,.10) 0%, transparent 45%);
+}
+
+/* Highway lines */
+.highway { position:absolute; bottom:0; left:0; right:0; top:0; pointer-events:none; }
+.highway__line {
+  position:absolute; bottom:0; width:2px;
+  background:linear-gradient(to top, rgba(212,168,67,.5), transparent);
+  transform-origin:bottom center;
+}
+.highway__line:nth-child(1){ height:62%; left:38%; transform:rotate(-20deg); opacity:.25;}
+.highway__line:nth-child(2){ height:72%; left:45%; transform:rotate(-7deg);  opacity:.45;}
+.highway__line:nth-child(3){
+  height:80%; left:50%; transform:rotate(0);  opacity:.6;
+  background:repeating-linear-gradient(
+    to top, rgba(212,168,67,.65) 0, rgba(212,168,67,.65) 26px,
+    transparent 26px, transparent 54px
+  );
+}
+.highway__line:nth-child(4){ height:72%; left:55%; transform:rotate(7deg);   opacity:.45;}
+.highway__line:nth-child(5){ height:62%; left:62%; transform:rotate(20deg);  opacity:.25;}
+
+.hero__right-inner {
+  position:relative; z-index:2;
+  height:100%; display:flex; flex-direction:column;
+  justify-content:center; padding:7rem 4vw 5rem;
+}
+
+.award-strip {
+  display:inline-flex; align-items:center; gap:.7rem;
+  background:rgba(212,168,67,.1); border:1px solid rgba(212,168,67,.28);
+  padding:.5rem 1.1rem; margin-bottom:2.2rem; align-self:flex-start;
+  opacity:0; animation:fadeIn 1s ease forwards 1.6s;
+}
+.award-strip span {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.7rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--gold);
+}
+
+.hero__pull {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic; font-size:clamp(1.1rem,1.6vw,1.55rem);
+  line-height:1.65; color:var(--paper); max-width:360px;
+  border-left:2px solid var(--rust); padding-left:1.5rem;
+  opacity:0; animation:fadeIn 1.2s ease forwards 1.8s;
+}
+
+.hero__mono {
+  position:absolute; bottom:-2rem; right:-1rem;
+  font-family:'Cormorant Garamond', serif;
+  font-weight:700; font-style:italic;
+  font-size:clamp(6rem,12vw,15rem); line-height:1;
+  color:transparent; -webkit-text-stroke:1px rgba(212,168,67,.15);
+  letter-spacing:-.04em; user-select:none; pointer-events:none;
+  opacity:0; animation:fadeIn 1.5s ease forwards 1.4s;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   STORY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.story {
+  background:var(--ink);
+  display:grid; grid-template-columns:1fr 1fr;
+}
+
+.story__left {
+  padding:clamp(4rem,8vw,7rem) 5vw clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,6vw);
+  display:flex; flex-direction:column; justify-content:center;
+  border-right:1px solid rgba(212,168,67,.1);
+}
+
+.story__body {
+  margin-top:1.6rem;
+  font-size:clamp(1rem,1.8vw,1.08rem); line-height:1.9;
+  color:rgba(242,236,224,.67); max-width:500px;
+}
+.story__body + .story__body { margin-top:1.1rem; }
+
+.story__stats {
+  display:flex; gap:clamp(1.5rem,4vw,3.5rem); flex-wrap:wrap;
+  margin-top:3rem; padding-top:2rem;
+  border-top:1px solid rgba(212,168,67,.14);
+}
+.sstat { display:flex; flex-direction:column; gap:.25rem; }
+.sstat__n {
+  font-family:'Bebas Neue', sans-serif;
+  font-size:clamp(2.4rem,4vw,3.8rem); line-height:1; color:var(--gold);
+}
+.sstat__l {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.65rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--mist);
+}
+
+.story__right {
+  background:var(--coal);
+  padding:clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,5vw);
+  display:flex; flex-direction:column; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.story__right::before {
+  content:'"'; position:absolute; top:-4rem; right:1rem;
+  font-family:'Cormorant Garamond', serif;
+  font-size:22rem; color:rgba(212,168,67,.035); line-height:1;
+  pointer-events:none;
+}
+
+.big-quote {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic; font-size:clamp(1.15rem,1.8vw,1.7rem);
+  line-height:1.6; color:var(--paper); position:relative;
+}
+.big-quote::before {
+  content:''; display:block; width:44px; height:3px;
+  background:var(--rust); margin-bottom:2rem;
+}
+.quote-attr {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.73rem; font-weight:700; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--amber); margin-top:1.8rem;
+}
+.identity-tags {
+  display:flex; flex-wrap:wrap; gap:.5rem; margin-top:2.5rem;
+}
+.tag {
+  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1);
+  padding:.35rem .95rem;
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--mist);
+  transition:border-color .2s, color .2s;
+}
+.tag:hover { border-color:var(--gold); color:var(--gold); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SILENCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.silence {
+  background:var(--midnight);
+  padding:clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,6vw);
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:clamp(2rem,5vw,5rem); align-items:center;
+  position:relative; overflow:hidden;
+}
+.silence::before {
+  content:'50'; position:absolute; right:-2rem; top:50%; transform:translateY(-50%);
+  font-family:'Bebas Neue', sans-serif; font-size:22rem; line-height:1;
+  color:rgba(255,255,255,.022); pointer-events:none; user-select:none;
+}
+
+.silence__body { margin-top:1.6rem; }
+.silence__body p {
+  font-size:clamp(1rem,1.8vw,1.08rem); line-height:1.9;
+  color:rgba(242,236,224,.67); max-width:520px;
+}
+.silence__body p + p { margin-top:1.1rem; }
+.silence__body p strong { color:var(--paper); font-weight:600; }
+.silence__cta { margin-top:2.5rem; }
+
+.silence__cards { display:flex; flex-direction:column; gap:2px; }
+.scard {
+  background:rgba(255,255,255,.04); padding:1.8rem 2rem;
+  border-left:3px solid transparent;
+  transition:border-color .25s, background .25s;
+}
+.scard:hover { border-left-color:var(--rust); background:rgba(255,255,255,.07); }
+.scard__label {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.68rem; font-weight:800; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--amber); margin-bottom:.6rem;
+}
+.scard__text {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic; font-size:1.05rem; line-height:1.75;
+  color:rgba(242,236,224,.74);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BOOKS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.books {
+  background:var(--paper);
+  padding:clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,6vw);
+  position:relative; overflow:hidden;
+}
+.books::before {
+  content:'BOOKS'; position:absolute; bottom:-3rem; right:-1rem;
+  font-family:'Bebas Neue', sans-serif; font-size:clamp(6rem,14vw,16rem);
+  line-height:1; color:rgba(28,26,22,.055);
+  pointer-events:none; user-select:none;
+}
+
+.books__sub {
+  margin-top:.8rem; font-style:italic;
+  font-size:clamp(1rem,1.6vw,1.08rem); line-height:1.85;
+  color:var(--pewter); max-width:540px;
+}
+.books__grid {
+  margin-top:3.5rem;
+  display:grid; grid-template-columns:1fr 1fr; gap:2px;
+}
+
+.book-card {
+  background:var(--cream);
+  padding:clamp(2rem,4vw,3.2rem);
+  position:relative; overflow:hidden;
+  display:block; color:inherit;
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+.book-card:hover { transform:translateY(-5px); box-shadow:0 20px 55px rgba(0,0,0,.1); }
+.book-card::before {
+  content:''; position:absolute; top:0; left:0; width:4px; height:100%;
+  background:var(--rust); transform:scaleY(0); transform-origin:bottom;
+  transition:transform .35s ease;
+}
+.book-card:hover::before { transform:scaleY(1); }
+.book-card__num {
+  font-family:'Bebas Neue', sans-serif; font-size:7rem; line-height:1;
+  color:rgba(12,11,8,.055); position:absolute; top:.4rem; right:1.6rem;
+  user-select:none;
+}
+.book-card__award {
+  display:inline-flex; align-items:center; gap:.5rem;
+  background:var(--gold); color:var(--ink);
+  padding:.3rem .85rem; margin-bottom:1.4rem;
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.67rem; font-weight:800; letter-spacing:.17em; text-transform:uppercase;
+}
+.book-card__title {
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(1.5rem,2.5vw,2rem); font-weight:700; line-height:1.15;
+  color:var(--ink); margin-bottom:.4rem;
+}
+.book-card__sub {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic; font-size:.98rem;
+  color:var(--pewter); margin-bottom:1.4rem;
+}
+.book-card__desc {
+  font-size:clamp(.92rem,1.5vw,1rem); line-height:1.8;
+  color:var(--pewter); margin-bottom:2rem;
+}
+.book-card__cta {
+  display:inline-flex; align-items:center; gap:.55rem;
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.76rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--rust);
+  transition:gap .2s, color .2s;
+}
+.book-card__cta::after { content:'→'; }
+.book-card:hover .book-card__cta { gap:1rem; color:var(--rust-lt); }
+
+.book-card--coming {
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  text-align:center; min-height:300px;
+  background:rgba(12,11,8,.04);
+}
+.coming__text {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic; font-size:1.3rem; line-height:1.7;
+  color:var(--pewter); opacity:.6;
+}
+.coming__note {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.68rem; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--mist); margin-top:.8rem;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   POEM EXCERPT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.poem-sec {
+  background:var(--ink);
+  padding:clamp(5rem,10vw,8rem) 0;
+  position:relative; overflow:hidden;
+}
+.poem-sec__atm {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at 15% 50%, rgba(176,66,24,.09) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 30%, rgba(192,138,42,.07) 0%, transparent 50%);
+  pointer-events:none;
+}
+.poem-sec__inner {
+  max-width:720px; margin:0 auto;
+  padding:0 clamp(1.5rem,5vw,5vw);
+  text-align:center; position:relative; z-index:1;
+}
+.poem-eyebrow {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.72rem; font-weight:800; letter-spacing:.4em; text-transform:uppercase;
+  color:var(--rust-lt); margin-bottom:2rem;
+}
+.poem-title {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic; font-size:1.3rem;
+  color:var(--gold); margin-bottom:3rem;
+}
+.poem-text {
+  font-family:'Cormorant Garamond', serif; font-style:italic;
+  font-size:clamp(1.15rem,2.2vw,1.45rem); line-height:2.05;
+  color:rgba(242,236,224,.88);
+}
+.poem-text .stanza { margin-bottom:2rem; }
+.orn {
+  display:flex; align-items:center; justify-content:center; gap:1.5rem;
+  margin:3rem 0;
+}
+.orn::before { content:''; flex:1; max-width:120px; height:1px; background:linear-gradient(to right, transparent, rgba(212,168,67,.4)); }
+.orn::after  { content:''; flex:1; max-width:120px; height:1px; background:linear-gradient(to left,  transparent, rgba(212,168,67,.4)); }
+.orn span { color:var(--gold); font-size:.9rem; opacity:.6; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MEMOIR TEASER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.memoir {
+  background:var(--coal);
+  padding:clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,6vw);
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:clamp(2rem,5vw,6rem); align-items:center;
+  position:relative; overflow:hidden;
+}
+.memoir::before {
+  content:'MEMOIR'; position:absolute; left:-2rem; top:50%; transform:translateY(-50%);
+  font-family:'Bebas Neue', sans-serif; font-size:14rem; line-height:1;
+  color:rgba(255,255,255,.022); pointer-events:none; user-select:none;
+}
+
+.memoir__body {
+  margin-top:1.6rem;
+  font-size:clamp(1rem,1.8vw,1.08rem); line-height:1.9;
+  color:rgba(242,236,224,.65); max-width:480px;
+}
+.memoir__body + .memoir__body { margin-top:1.1rem; }
+.memoir__note {
+  margin-top:2.2rem;
+  display:inline-flex; align-items:center; gap:.8rem;
+  padding:.55rem 1.3rem; border:1px solid rgba(212,168,67,.25);
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.7rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--gold);
+}
+.memoir__cta { margin-top:2rem; }
+
+.memoir__cards { display:flex; flex-direction:column; gap:2px; }
+.mcard {
+  background:rgba(255,255,255,.04);
+  padding:1.8rem 2rem;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  transition:background .25s;
+}
+.mcard:hover { background:rgba(255,255,255,.07); }
+.mcard__num {
+  font-family:'Bebas Neue', sans-serif; font-size:2.2rem; line-height:1;
+  color:var(--rust); opacity:.6; margin-bottom:.5rem;
+}
+.mcard__text {
+  font-family:'Cormorant Garamond', serif; font-style:italic;
+  font-size:1.05rem; line-height:1.75;
+  color:rgba(242,236,224,.74);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TESTIMONIALS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.testimonials {
+  background:var(--paper);
+  padding:clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,6vw);
+  position:relative; overflow:hidden;
+}
+.testimonials::before {
+  content:'"'; position:absolute; top:-3rem; left:-1rem;
+  font-family:'Cormorant Garamond', serif; font-size:22rem;
+  color:rgba(12,11,8,.045); line-height:1;
+  pointer-events:none; user-select:none;
+}
+
+.testimonials__grid {
+  margin-top:3.5rem;
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:2px;
+}
+
+.tcard {
+  background:var(--cream);
+  padding:clamp(1.8rem,3vw,2.6rem);
+  position:relative;
+  display:flex; flex-direction:column;
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+.tcard:hover { transform:translateY(-4px); box-shadow:0 16px 44px rgba(0,0,0,.1); }
+
+.tcard__stars {
+  display:flex; gap:.2rem; margin-bottom:1.2rem;
+}
+.tcard__star { color:var(--gold); font-size:1rem; }
+
+.tcard__quote {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic; font-size:clamp(1rem,1.5vw,1.12rem);
+  line-height:1.8; color:var(--ink);
+  flex:1; margin-bottom:1.8rem;
+}
+.tcard__quote::before { content:'"'; }
+.tcard__quote::after  { content:'"'; }
+
+.tcard__divider {
+  width:36px; height:2px; background:var(--rust);
+  margin-bottom:1.2rem;
+}
+
+.tcard__name {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.82rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--ink);
+}
+.tcard__src {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.7rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--pewter); margin-top:.25rem;
+}
+
+/* featured card */
+.tcard--featured {
+  background:var(--ink); border-top:3px solid var(--gold);
+}
+.tcard--featured .tcard__quote { color:rgba(242,236,224,.88); }
+.tcard--featured .tcard__name  { color:var(--paper); }
+.tcard--featured .tcard__src   { color:var(--mist); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PRESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.press {
+  background:var(--cream);
+  padding:clamp(3rem,6vw,4.5rem) clamp(1.5rem,6vw,6vw);
+  text-align:center;
+}
+.press__lbl {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.68rem; font-weight:700; letter-spacing:.38em; text-transform:uppercase;
+  color:var(--pewter); opacity:.6; margin-bottom:2.2rem;
+}
+.press__row {
+  display:flex; justify-content:center; align-items:center;
+  gap:clamp(1.5rem,4vw,3.5rem); flex-wrap:wrap;
+}
+.press__item {
+  font-family:'Cormorant Garamond', serif; font-style:italic; font-size:1.05rem;
+  color:var(--pewter); opacity:.5; transition:opacity .2s;
+}
+.press__item:hover { opacity:.9; }
+.press__pill {
+  background:var(--gold); color:var(--ink);
+  padding:.38rem 1.3rem;
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.72rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase;
+  opacity:1 !important;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CONNECT / NEWSLETTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.connect {
+  background:var(--rust);
+  padding:clamp(4rem,8vw,6rem) clamp(1.5rem,6vw,6vw);
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:clamp(2.5rem,5vw,5rem); align-items:center;
+  position:relative; overflow:hidden;
+}
+.connect::before {
+  content:'10-4'; position:absolute; right:-2rem; bottom:-4rem;
+  font-family:'Bebas Neue', sans-serif; font-size:18rem; line-height:1;
+  color:rgba(0,0,0,.09); pointer-events:none; user-select:none;
+}
+.connect__h {
+  font-family:'Cormorant Garamond', serif; font-weight:700;
+  font-size:clamp(2.2rem,4vw,3.4rem); line-height:1.06; color:#fff;
+}
+.connect__sub {
+  margin-top:1.1rem; font-size:clamp(.98rem,1.6vw,1.05rem);
+  line-height:1.8; color:rgba(255,255,255,.8);
+}
+.connect__email {
+  margin-top:1.4rem; display:inline-block;
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.8rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(255,255,255,.65);
+  transition:color .2s;
+}
+.connect__email:hover { color:#fff; }
+
+.connect__form { display:flex; flex-direction:column; gap:.9rem; position:relative; z-index:1; }
+.c-input {
+  background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3);
+  padding:1rem 1.3rem;
+  font-family:'Cormorant Garamond', serif; font-size:1.05rem; color:#fff;
+  outline:none; transition:background .2s, border-color .2s;
+  -webkit-appearance:none;
+}
+.c-input::placeholder { color:rgba(255,255,255,.5); }
+.c-input:focus { background:rgba(255,255,255,.22); border-color:#fff; }
+.c-btn {
+  background:var(--ink); color:var(--gold);
+  padding:1rem 2rem;
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.85rem; font-weight:800; letter-spacing:.24em; text-transform:uppercase;
+  border:none; cursor:pointer; transition:background .2s, color .2s;
+}
+.c-btn:hover { background:#000; color:#fff; }
+.c-fine { font-size:.88rem; font-style:italic; color:rgba(255,255,255,.5); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FOOTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+footer {
+  background:var(--ink);
+  padding:clamp(3rem,6vw,4.5rem) clamp(1.5rem,6vw,6vw) clamp(1.5rem,3vw,2.5rem);
+}
+.footer__top {
+  display:grid; grid-template-columns:2fr 1fr 1fr;
+  gap:clamp(2rem,4vw,4rem);
+  padding-bottom:2.5rem;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  margin-bottom:1.8rem;
+}
+.f-logo {
+  font-family:'Bebas Neue', sans-serif;
+  font-size:2.6rem; letter-spacing:.14em; color:var(--gold); line-height:1;
+  margin-bottom:.4rem;
+}
+.f-tagline {
+  font-family:'Cormorant Garamond', serif; font-style:italic; font-size:.98rem;
+  color:var(--mist); margin-bottom:1.4rem;
+}
+.f-socials { display:flex; gap:.7rem; flex-wrap:wrap; }
+.f-soc {
+  width:36px; height:36px; border:1px solid rgba(255,255,255,.13);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.73rem; font-weight:700; color:var(--mist);
+  transition:border-color .2s, color .2s;
+}
+.f-soc:hover { border-color:var(--gold); color:var(--gold); }
+.f-col-title {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.7rem; font-weight:800; letter-spacing:.3em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:1.3rem;
+}
+.f-links { list-style:none; display:flex; flex-direction:column; gap:.7rem; }
+.f-links a {
+  font-size:.95rem; color:var(--mist); opacity:.65;
+  transition:color .2s, opacity .2s;
+}
+.f-links a:hover { color:var(--paper); opacity:1; }
+
+.footer__bottom {
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;
+}
+.f-copy {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.68rem; letter-spacing:.1em; color:var(--mist); opacity:.4;
+}
+.f-mail {
+  font-family:'Barlow Condensed', sans-serif;
+  font-size:.76rem; letter-spacing:.1em; color:var(--rust);
+  transition:color .2s;
+}
+.f-mail:hover { color:var(--gold); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   KEYFRAMES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity:0; } to { opacity:1; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE — TABLET  ≤ 900px
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 900px) {
+
+  /* hero: stack left over right */
+  .hero {
+    grid-template-columns:1fr;
+    min-height:auto;
+  }
+  .hero__left {
+    min-height:70vh;
+    padding:8rem 5vw 4rem;
+  }
+  .hero__left::after { display:none; }
+  .hero__right {
+    min-height:44vw;
+  }
+  .hero__right-inner { padding:5vw; justify-content:flex-end; }
+  .hero__mono { font-size:clamp(5rem,14vw,10rem); bottom:-1rem; right:0; }
+
+  /* story: stack */
+  .story {
+    grid-template-columns:1fr;
+  }
+  .story__left {
+    padding:4rem 5vw;
+    border-right:none;
+    border-bottom:1px solid rgba(212,168,67,.1);
+  }
+  .story__right { padding:4rem 5vw; }
+  .story__right::before { font-size:14rem; }
+
+  /* silence: stack */
+  .silence {
+    grid-template-columns:1fr;
+    gap:3rem;
+  }
+  .silence::before { display:none; }
+
+  /* books: single column */
+  .books__grid { grid-template-columns:1fr; }
+  .book-card--coming { min-height:200px; }
+
+  /* memoir: stack */
+  .memoir {
+    grid-template-columns:1fr;
+    gap:3rem;
+  }
+  .memoir::before { display:none; }
+
+  /* testimonials: 2 cols */
+  .testimonials__grid { grid-template-columns:1fr 1fr; }
+
+  /* connect: stack */
+  .connect {
+    grid-template-columns:1fr;
+    gap:3rem;
+  }
+  .connect::before { display:none; }
+
+  /* footer: 2 col then 1 */
+  .footer__top { grid-template-columns:1fr 1fr; }
+  .footer__top > *:first-child { grid-column:1/-1; }
+  .footer__bottom { flex-direction:column; text-align:center; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE — MOBILE  ≤ 600px
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 600px) {
+
+  /* Show hamburger, hide desktop links */
+  .nav__links { display:none; }
+  .nav__burger { display:flex; }
+
+  /* hero */
+  .hero__left {
+    min-height:100svh;
+    padding:7rem 5vw 5rem;
+  }
+  .hero__right { display:none; } /* hide on small screens; hero is self-contained */
+
+  .hero__kicker { font-size:.66rem; letter-spacing:.28em; }
+  .hero__name  { font-size:clamp(3.5rem,14vw,5.5rem); }
+  .hero__name-em { font-size:clamp(2.4rem,10vw,4rem); }
+  .hero__ctas  { flex-direction:column; gap:.8rem; }
+  .hero__ctas .btn { text-align:center; }
+  .hero__meta  { gap:2rem; }
+  .scroll-cue  { display:none; }
+
+  /* road divider shorter */
+  .road-divider { height:44px; }
+
+  /* story */
+  .story__right::before { display:none; }
+  .identity-tags { gap:.4rem; }
+
+  /* silence cards */
+  .silence::before { display:none; }
+
+  /* books */
+  .book-card__num { font-size:5rem; top:.3rem; right:1rem; }
+
+  /* memoir */
+  .memoir::before { display:none; }
+
+  /* testimonials: single column on mobile */
+  .testimonials__grid { grid-template-columns:1fr; }
+
+  /* press row */
+  .press__row { gap:1.2rem; }
+
+  /* footer */
+  .footer__top { grid-template-columns:1fr; }
+  .footer__top > *:first-child { grid-column:auto; }
+
+  /* general padding boost for readability */
+  .books, .testimonials, .press, .silence,
+  .memoir, .connect, footer {
+    padding-left:5vw;
+    padding-right:5vw;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   VERY SMALL  ≤ 380px
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 380px) {
+  .hero__name    { font-size:3.2rem; }
+  .hero__name-em { font-size:2.2rem; }
+  .hero__ctas    { gap:.6rem; }
+  .btn           { padding:.85rem 1.5rem; font-size:.78rem; }
+  .hero__meta    { gap:1.4rem; }
+  .hmeta__val    { font-size:2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav__logo">JW</a>
+
+  <ul class="nav__links">
+    <li><a href="#story">His Story</a></li>
+    <li><a href="#books">Books</a></li>
+    <li><a href="#memoir">Memoir</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+
+  <button class="nav__burger" id="burger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="nav__drawer" id="drawer">
+  <button class="nav__drawer-close" id="drawerClose" aria-label="Close menu">✕</button>
+  <a href="#story"        onclick="closeDrawer()">His Story</a>
+  <a href="#books"        onclick="closeDrawer()">Books</a>
+  <a href="#memoir"       onclick="closeDrawer()">Memoir</a>
+  <a href="#testimonials" onclick="closeDrawer()">Reviews</a>
+  <a href="#connect"      onclick="closeDrawer()">Connect</a>
+</div>
+
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" id="home">
+
+  <div class="hero__left">
+    <p class="hero__kicker">Retired Trucker · Rogue Poet · Canadian-Born · Green Bay, WI</p>
+
+    <h1 class="hero__name">
+      JAC
+      <span class="hero__name-em">Winters</span>
+    </h1>
+
+    <p class="hero__sub">
+      "These words are for anyone carrying their own silent burdens.&nbsp;
+      You are not alone."
+    </p>
+
+    <div class="hero__ctas">
+      <a href="http://amazon.com/author/jacwinterspoetry" class="btn btn--fill" target="_blank">Get the Book</a>
+      <a href="#story" class="btn btn--outline">Read His Story</a>
+    </div>
+
+    <div class="hero__meta">
+      <div class="hmeta">
+        <span class="hmeta__val">30+</span>
+        <span class="hmeta__key">Years on the Road</span>
+      </div>
+      <div class="hmeta">
+        <span class="hmeta__val">50</span>
+        <span class="hmeta__key">Years of Silence</span>
+      </div>
+      <div class="hmeta">
+        <span class="hmeta__val">★</span>
+        <span class="hmeta__key">Titan Gold Award</span>
+      </div>
+    </div>
+
+    <div class="scroll-cue">
+      <div class="scroll-cue__dash"></div>
+      <span>Scroll</span>
+    </div>
+  </div>
+
+  <div class="hero__right">
+    <div class="highway">
+      <div class="highway__line"></div>
+      <div class="highway__line"></div>
+      <div class="highway__line"></div>
+      <div class="highway__line"></div>
+      <div class="highway__line"></div>
+    </div>
+    <div class="hero__right-inner">
+      <div class="award-strip">
+        <span>★ Literary Titan Gold Book Award</span>
+      </div>
+      <blockquote class="hero__pull">
+        From the cab of a truck and the endless black ribbon of highway
+        that kept him moving forward — poetry born from a life fully lived.
+      </blockquote>
+    </div>
+    <div class="hero__mono">JW</div>
+  </div>
+
+</section>
+
+<div class="road-divider"></div>
+
+
+<!-- ═══════════ STORY ═══════════ -->
+<section class="story" id="story">
+
+  <div class="story__left">
+    <p class="sec-label sec-label--rust rv">The Road Behind</p>
+    <h2 class="sec-h2 sec-h2--light rv d1">30 Years of Highway.<br><em>Then the Page.</em></h2>
+    <p class="story__body rv d2">
+      Born in Chilliwack, British Columbia into a Dutch farming family, Jac Winters
+      spent nearly three decades behind the wheel — ice roads, custom harvesting,
+      and over-dimensional hauls across the full breadth of North America.
+    </p>
+    <p class="story__body rv d2">
+      Those miles were his real classroom. He learned resilience, the value of
+      unexpected kindness, and the art of sitting with silence. When the trucking
+      chapter closed, writing didn't just begin — it erupted. Not as a hobby,
+      but as a calling decades in the making.
+    </p>
+    <p class="story__body rv d3">
+      Jac now lives in Green Bay, Wisconsin, with his wife and two children.
+      He writes for the misfits, the dreamers, and the ones who've faced the dark
+      and kept moving anyway.
+    </p>
+    <div class="story__stats rv d3">
+      <div class="sstat"><span class="sstat__n">30</span><span class="sstat__l">Years Trucking</span></div>
+      <div class="sstat"><span class="sstat__n">2017</span><span class="sstat__l">Writing Began</span></div>
+      <div class="sstat"><span class="sstat__n">2+</span><span class="sstat__l">Published Works</span></div>
+    </div>
+  </div>
+
+  <div class="story__right">
+    <blockquote class="big-quote rv">
+      "I've traded the rumble of eighteen-wheelers for the rhythm of poetry
+      and prose — crafting stories and verses that echo the highways, heartaches,
+      and hard-won wisdom of a life lived full throttle."
+    </blockquote>
+    <p class="quote-attr rv d1">— Jac Winters, The Rogue Poet</p>
+    <div class="identity-tags rv d2">
+      <span class="tag">Poet</span>
+      <span class="tag">Author</span>
+      <span class="tag">Trucker</span>
+      <span class="tag">Father</span>
+      <span class="tag">Husband</span>
+      <span class="tag">Gen X</span>
+      <span class="tag">Canadian Roots</span>
+      <span class="tag">Wisconsin Heart</span>
+      <span class="tag">Rogue Poet</span>
+      <span class="tag">Survivor</span>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ═══════════ SILENCE ═══════════ -->
+<section class="silence">
+
+  <div class="silence-left">
+    <p class="sec-label sec-label--rust rv">The Real Story</p>
+    <h2 class="sec-h2 sec-h2--light rv d1">Half a Century<br><em>of Silence.</em></h2>
+    <div class="silence__body rv d2">
+      <p><strong>For half a century, Jac lived with memories that rippled through
+      his body like the fear placed there by a woman who chose to alter
+      the trajectory of a little boy's life.</strong></p>
+      <p>Young Jac takes you on a long and winding road inside the mind of a child,
+      revealing the devastating impact of what it means to live through the unlivable.</p>
+      <p>Jac, now a retired truck driver, husband, and father, guides you gently through
+      the arduous task of reconciling the fear and horrible memories that racked his
+      mind for decades. The road to redemption is filled with joy, sorrow, uncertainty,
+      anger, confusion — and now, peace.</p>
+    </div>
+    <div class="silence__cta rv d3">
+      <a href="http://amazon.com/author/jacwinterspoetry" class="btn btn--fill" target="_blank">Read the Collection</a>
+    </div>
+  </div>
+
+  <div class="silence__cards">
+    <div class="scard rv d1">
+      <p class="scard__label">The Child</p>
+      <p class="scard__text">"Young Jac takes you on a long and winding road inside the mind of a child, revealing the devastating impact of what it means to live through the unlivable."</p>
+    </div>
+    <div class="scard rv d2">
+      <p class="scard__label">The Road</p>
+      <p class="scard__text">"The endless black ribbon that kept him from dying in the dark. Jac pays homage to the joy of trucking — and what those miles truly meant for his survival."</p>
+    </div>
+    <div class="scard rv d3">
+      <p class="scard__label">The Peace</p>
+      <p class="scard__text">"The road to redemption is filled with joy, sorrow, uncertainty, anger, confusion — and now peace. This book is for anyone living in silence. These words are for you."</p>
+    </div>
+    <div class="scard rv d4">
+      <p class="scard__label">The Mission</p>
+      <p class="scard__text">"Join Jac as he proves you can carry the weight for decades and still find your way to the light. You are not alone on this road."</p>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ═══════════ BOOKS ═══════════ -->
+<section class="books" id="books">
+  <p class="sec-label sec-label--dark rv">Published Works</p>
+  <h2 class="sec-h2 sec-h2--dark rv d1">Words That<br><em>Cut Deep.</em></h2>
+  <p class="books__sub rv d2">
+    Poetry and prose rooted in the unfiltered truths of survival, love, loss —
+    and the quiet triumph of still being here.
+  </p>
+
+  <div class="books__grid">
+    <a class="book-card rv d2" href="http://amazon.com/author/jacwinterspoetry" target="_blank">
+      <div class="book-card__num">01</div>
+      <span class="book-card__award">★ Literary Titan Gold Book Award</span>
+      <h3 class="book-card__title">To Say Goodbye Again</h3>
+      <p class="book-card__sub">Saying Farewell — A Survivor's Poetry of Loss and Renewal</p>
+      <p class="book-card__desc">
+        Jac Winters lived for half a century in silence, carrying memories that stayed
+        deep in his bones. In <em>To Say Goodbye Again</em>, he distills that long journey
+        into powerful poetry. What began as private verses in 2017 cracked open decades
+        of fear, confusion, and anger — revealing the arduous road to reconciliation and peace.
+        A Titan Gold Book Award recipient, this collection offers an intimate prelude to his
+        forthcoming memoir. Through poems born from the cab of a truck and the endless black
+        ribbon of highway, Jac pays quiet homage to resilience, redemption, and the simple joy of trucking.
+      </p>
+      <span class="book-card__cta">Get on Amazon</span>
+    </a>
+
+    <div class="book-card book-card--coming rv d3">
+      <p class="coming__text">
+        "New work is being poured<br>with full heart…<br>
+        An intimate memoir is coming."
+      </p>
+      <p class="coming__note">Forthcoming Memoir · Stay Tuned</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════ POEM ═══════════ -->
+<section class="poem-sec">
+  <div class="poem-sec__atm"></div>
+  <div class="poem-sec__inner">
+    <p class="poem-eyebrow rv">A Taste of the Road</p>
+    <p class="poem-title rv d1">From "To Say Goodbye Again"</p>
+    <div class="poem-text rv d2">
+      <div class="stanza">
+        I've made you sturdy enough<br>
+        for one such blow as this,<br>
+        so even if you prayed with all your might<br>
+        to have one more dinner at candlelight…
+      </div>
+      <div class="stanza">
+        Another boat ride or paraglide,<br>
+        to live, to laugh, to cry<br>
+        with all of them by your side.
+      </div>
+      <div class="stanza">
+        Even if you mustered all your strength,<br>
+        or conjured up every ounce of will to pull you through —<br>
+        to say goodbye again<br>
+        would kill you.
+      </div>
+    </div>
+    <div class="orn rv d3"><span>✦</span></div>
+    <a href="http://amazon.com/author/jacwinterspoetry" class="btn btn--fill rv d3" target="_blank" style="display:inline-block;">Read the Full Collection</a>
+  </div>
+</section>
+
+
+<!-- ═══════════ MEMOIR ═══════════ -->
+<section class="memoir" id="memoir">
+
+  <div class="memoir-left">
+    <p class="sec-label sec-label--rust rv">Coming Soon</p>
+    <h2 class="sec-h2 sec-h2--light rv d1">The Memoir:<br><em>Young Jac</em></h2>
+    <p class="memoir__body rv d2">
+      <em>To Say Goodbye Again</em> was the intimate prelude.
+      Now Jac is writing the full story — a memoir that takes you deep inside
+      the mind of a boy carrying the weight of the unlivable, and the man who
+      found peace on the far side of fifty.
+    </p>
+    <p class="memoir__body rv d2">
+      The road to redemption is filled with joy, sorrow, uncertainty, anger,
+      confusion — and finally, peace. This is that road, told in full.
+    </p>
+    <div class="memoir__note rv d3">
+      <span>⏳</span>
+      <span>Memoir in Progress · Subscribe for Updates</span>
+    </div>
+    <div class="memoir__cta rv d3">
+      <a href="#connect" class="btn btn--outline">Stay Informed</a>
+    </div>
+  </div>
+
+  <div class="memoir__cards">
+    <div class="mcard rv d1">
+      <div class="mcard__num">01</div>
+      <p class="mcard__text">"For half a century, I lived with memories that rippled through my body like the fear placed there by a woman who chose to alter the trajectory of a little boy's life."</p>
+    </div>
+    <div class="mcard rv d2">
+      <div class="mcard__num">02</div>
+      <p class="mcard__text">"Young Jac takes you on a long and winding road inside the mind of a child, revealing the devastating impact of what it means to live through the unlivable."</p>
+    </div>
+    <div class="mcard rv d3">
+      <div class="mcard__num">03</div>
+      <p class="mcard__text">"The road to redemption is filled with joy, sorrow, uncertainty, anger, confusion — and now peace. Join Jac as he pays homage to the joy of trucking and the endless black ribbon that kept him from dying in the dark."</p>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ═══════════ TESTIMONIALS ═══════════ -->
+<section class="testimonials" id="testimonials">
+  <p class="sec-label sec-label--dark rv">Reader Reviews</p>
+  <h2 class="sec-h2 sec-h2--dark rv d1">What Readers<br><em>Are Saying.</em></h2>
+
+  <div class="testimonials__grid">
+
+    <div class="tcard tcard--featured rv d1">
+      <div class="tcard__stars">
+        <span class="tcard__star">★</span><span class="tcard__star">★</span>
+        <span class="tcard__star">★</span><span class="tcard__star">★</span>
+        <span class="tcard__star">★</span>
+      </div>
+      <p class="tcard__quote">Jac Winters has managed to put the most fragile of human emotions into words that pierce the soul. This is a collection you will return to again and again.</p>
+      <div class="tcard__divider"></div>
+      <p class="tcard__name">Literary Titan</p>
+      <p class="tcard__src">★ Gold Book Award · Official Review</p>
+    </div>
+
+    <div class="tcard rv d2">
+      <div class="tcard__stars">
+        <span class="tcard__star">★</span><span class="tcard__star">★</span>
+        <span class="tcard__star">★</span><span class="tcard__star">★</span>
+        <span class="tcard__star">★</span>
+      </div>
+      <p class="tcard__quote">Raw, honest, and deeply moving. Jac writes like a man who has earned every word. I finished it in one sitting and cried twice.</p>
+      <div class="tcard__divider"></div>
+      <p class="tcard__name">Amazon Reader</p>
+      <p class="tcard__src">Verified Purchase</p>
+    </div>
+
+    <div class="tcard rv d3">
+      <div class="tcard__stars">
+        <span class="tcard__star">★</span><span class="tcard__star">★</span>
+        <span class="tcard__star">★</span><span class="tcard__star">★</span>
+        <span class="tcard__star">★</span>
+      </div>
+      <p class="tcard__quote">There's a quiet power in these pages. He doesn't dress anything up — he just tells the truth, and that truth is beautiful and devastating all at once.</p>
+      <div class="tcard__divider"></div>
+      <p class="tcard__name">Goodreads Reader</p>
+      <p class="tcard__src">5-Star Review</p>
+    </div>
+
+    <div class="tcard rv d2">
+      <div class="tcard__stars">
+        <span class="tcard__star">★</span><span class="tcard__star">★</span>
+        <span class="tcard__star">★</span><span class="tcard__star">★</span>
+        <span class="tcard__star">★</span>
+      </div>
+      <p class="tcard__quote">I gave this to my father, a retired trucker who never talks about his feelings. He called me the next morning. That's what this book does.</p>
+      <div class="tcard__divider"></div>
+      <p class="tcard__name">Sarah M.</p>
+      <p class="tcard__src">Amazon · Verified Purchase</p>
+    </div>
+
+    <div class="tcard rv d3">
+      <div class="tcard__stars">
+        <span class="tcard__star">★</span><span class="tcard__star">★</span>
+        <span class="tcard__star">★</span><span class="tcard__star">★</span>
+        <span class="tcard__star">★</span>
+      </div>
+      <p class="tcard__quote">For anyone who has ever carried something heavy in silence — this is the book that says: you are seen. You are not alone. And you will survive.</p>
+      <div class="tcard__divider"></div>
+      <p class="tcard__name">T. Robertson</p>
+      <p class="tcard__src">Goodreads · 5 Stars</p>
+    </div>
+
+    <div class="tcard rv d4">
+      <div class="tcard__stars">
+        <span class="tcard__star">★</span><span class="tcard__star">★</span>
+        <span class="tcard__star">★</span><span class="tcard__star">★</span>
+        <span class="tcard__star">★</span>
+      </div>
+      <p class="tcard__quote">The voice in these poems is unlike anything I've read. Gritty, road-worn, soulful — it's poetry that doesn't apologise for being exactly what it is.</p>
+      <div class="tcard__divider"></div>
+      <p class="tcard__name">Derek W.</p>
+      <p class="tcard__src">Amazon · Verified Purchase</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════ PRESS ═══════════ -->
+<section class="press">
+  <p class="press__lbl rv">Recognition & Press</p>
+  <div class="press__row">
+    <span class="press__pill rv">★ Literary Titan Gold Book Award</span>
+    <span class="press__item rv d1">Literary Titan</span>
+    <span class="press__item rv d2">Page Publishing</span>
+    <span class="press__item rv d2">Goodreads</span>
+    <span class="press__item rv d3">PR.com</span>
+  </div>
+</section>
+
+
+<!-- ═══════════ CONNECT ═══════════ -->
+<section class="connect" id="connect">
+
+  <div class="connect__left">
+    <h2 class="connect__h rv">Grab a Coffee.<br>Pull Up a Chair.</h2>
+    <p class="connect__sub rv d1">
+      New poems, behind-the-road stories, memoir updates — delivered straight to you.
+      No noise. Just the real stuff.
+    </p>
+    <a href="mailto:authorjacwinters@gmail.com" class="connect__email rv d2">
+      📬 authorjacwinters@gmail.com
+    </a>
+  </div>
+
+  <div class="connect__right">
+    <div class="connect__form rv d2">
+      <input type="text"  class="c-input" placeholder="Your Name">
+      <input type="email" class="c-input" placeholder="Your Email Address">
+      <button class="c-btn">Ping Me — I'm In</button>
+      <p class="c-fine">No spam. Just words from the road, delivered with heart.</p>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="footer__top">
+    <div>
+      <p class="f-logo">JAC WINTERS</p>
+      <p class="f-tagline">The Rogue Poet — From my life to yours.</p>
+      <div class="f-socials">
+        <a href="https://x.com/JacWinters" class="f-soc" target="_blank" aria-label="X / Twitter">𝕏</a>
+        <a href="https://www.facebook.com/retroactiveproductions/" class="f-soc" target="_blank" aria-label="Facebook">f</a>
+        <a href="https://www.goodreads.com/book/show/244698443-to-say-goodbye-again" class="f-soc" target="_blank" aria-label="Goodreads">Gr</a>
+        <a href="http://amazon.com/author/jacwinterspoetry" class="f-soc" target="_blank" aria-label="Amazon">Az</a>
+      </div>
+    </div>
+    <div>
+      <p class="f-col-title">Navigate</p>
+      <ul class="f-links">
+        <li><a href="#story">His Story</a></li>
+        <li><a href="#books">Books</a></li>
+        <li><a href="#memoir">Memoir</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="https://jacwinters.com/shop/" target="_blank">Shop</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="f-col-title">Connect</p>
+      <ul class="f-links">
+        <li><a href="https://x.com/JacWinters" target="_blank">X / Twitter</a></li>
+        <li><a href="https://www.facebook.com/retroactiveproductions/" target="_blank">Facebook</a></li>
+        <li><a href="https://literarytitan.com/2026/04/10/to-say-goodbye-again/" target="_blank">Literary Titan</a></li>
+        <li><a href="https://www.goodreads.com/book/show/244698443-to-say-goodbye-again" target="_blank">Goodreads</a></li>
+        <li><a href="mailto:authorjacwinters@gmail.com">Email Jac</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <p class="f-copy">© 2026 Jac Winters · 10-Four Chronicles · Heart in Hands Production · Green Bay, Wisconsin</p>
+    <a href="mailto:authorjacwinters@gmail.com" class="f-mail">authorjacwinters@gmail.com</a>
+  </div>
+</footer>
+
+
+<script>
+/* ── Nav scroll ── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive:true });
+
+/* ── Hamburger ── */
+const burger = document.getElementById('burger');
+const drawer = document.getElementById('drawer');
+const drawerClose = document.getElementById('drawerClose');
+
+burger.addEventListener('click', () => {
+  drawer.classList.add('open');
+  document.body.style.overflow = 'hidden';
+});
+function closeDrawer() {
+  drawer.classList.remove('open');
+  document.body.style.overflow = '';
+}
+drawerClose.addEventListener('click', closeDrawer);
+drawer.addEventListener('click', e => {
+  if (e.target === drawer) closeDrawer();
+});
+
+/* ── Scroll reveal ── */
+const revealEls = document.querySelectorAll('.rv');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin:'0px 0px -32px 0px' });
+revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
